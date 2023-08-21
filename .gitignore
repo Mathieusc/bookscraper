@@ -1,0 +1,39 @@
+# Ignore venv
+venv/
+
+# Ignore Python bytecode files
+__pycache__/
+
+# Ignore environment-specific files
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.sqlite3
+
+# Ignore IDE and editor specific files
+.vscode/
+.idea/
+*.code-workspace
+*.iml
+*.pydevproject
+
+# Ignore local configuration files
+*.env
+*.env.*
+*.log
+*.cfg
+*.ini
+*.conf
+
+# Ignore package manager directories
+pip-log.txt
+pip-delete-this-directory.txt
+*.egg-info/
+dist/
+build/
+*.egg
+*.whl
+*.pyc
+*.pyo
+*.pyd
