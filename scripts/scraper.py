@@ -30,7 +30,7 @@ class BookScraper:
         return product_url
     
     def extract_universal_product_code(self, soup):
-        upc = soup.find("th", text="UPC").find_next_sibling()
+        upc = soup.find("th", string="UPC").find_next_sibling()
         return upc.text
     
     def extract_title(self, soup):
