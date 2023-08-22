@@ -12,3 +12,10 @@ def test_extract_universal_product_code():
     result = book_scraper.extract_universal_product_code(soup)
     excepted_result = "a897fe39b1053632"
     assert result == excepted_result
+
+def test_extract_title():
+    soup = BeautifulSoup(sample_html, "html.parser")
+    book_scraper = BookScraper("http://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html")
+    result = book_scraper.extract_title(soup)
+    excepted_result = "A Light in the Attic"
+    assert result == excepted_result

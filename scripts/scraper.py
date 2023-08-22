@@ -19,7 +19,7 @@ class BookScraper:
                 
                 print(soup)
 
-                test = self.extract_universal_product_code(soup)
+                test = self.extract_title(soup)
                 print(test)
 
         return soup
@@ -34,8 +34,8 @@ class BookScraper:
         return upc.text
     
     def extract_title(self, soup):
-        title = ""
-        return title
+        title = soup.find("h1")
+        return title.text
     
     def extract_price_including_tax(self, soup):
         price_with_tax = ""
