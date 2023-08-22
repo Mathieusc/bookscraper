@@ -19,7 +19,7 @@ class BookScraper:
                 
                 print(soup)
 
-                test = self.extract_product_description(soup)
+                test = self.extract_category(soup)
                 print(test)
 
         return soup
@@ -54,8 +54,8 @@ class BookScraper:
         return description.text
     
     def extract_category(self, soup):
-        category = ""
-        return category
+        category = soup.find("li", {"class": "active"}).find_previous_sibling()
+        return category.text.strip()
     
     def extract_review_rating(self, soup):
         rating = ""
