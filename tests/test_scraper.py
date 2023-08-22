@@ -33,3 +33,10 @@ def test_extract_price_excluding_tax():
     result = book_scraper.extract_price_excluding_tax(soup)
     excepted_result = "£51.77"
     assert result == excepted_result
+
+def test_extract_number_available():
+    soup = BeautifulSoup(sample_html, "html.parser")
+    book_scraper = BookScraper("http://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html")
+    result = book_scraper.extract_number_available(soup)
+    excepted_result = "In stock (22 available)"
+    assert result == excepted_result

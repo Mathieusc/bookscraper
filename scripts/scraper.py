@@ -19,7 +19,7 @@ class BookScraper:
                 
                 print(soup)
 
-                test = self.extract_price_excluding_tax(soup)
+                test = self.extract_number_available(soup)
                 print(test)
 
         return soup
@@ -46,8 +46,8 @@ class BookScraper:
         return price_without_tax.text
     
     def extract_number_available(self, soup):
-        number_available = ""
-        return number_available
+        number_available = soup.find("p", {"class": "instock availability"})
+        return number_available.text.strip()
     
     def extract_product_description(self, soup):
         description = ""
