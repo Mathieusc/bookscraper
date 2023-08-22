@@ -19,7 +19,7 @@ class BookScraper:
                 
                 print(soup)
 
-                test = self.extract_number_available(soup)
+                test = self.extract_product_description(soup)
                 print(test)
 
         return soup
@@ -50,8 +50,8 @@ class BookScraper:
         return number_available.text.strip()
     
     def extract_product_description(self, soup):
-        description = ""
-        return description
+        description = soup.find("h2").find_next()
+        return description.text
     
     def extract_category(self, soup):
         category = ""
