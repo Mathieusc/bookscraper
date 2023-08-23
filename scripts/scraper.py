@@ -3,9 +3,20 @@ import aiohttp
 import asyncio
 import csv
 import re
+from ..logger.error_handler import log_error
 
 
 class BookScraper:
+
+    RATING_MAPPING = {
+        "Zero": "0",
+        "One": "1",
+        "Two": "2",
+        "Three": "3",
+        "Four": "4",
+        "Five": "5",
+    }
+
     def __init__(self, book_url):
         self.book_url = book_url
         self.book_data = {}
@@ -59,20 +70,24 @@ class BookScraper:
         return category.text.strip()
     
     def extract_review_rating(self, soup):
-        rating_element = soup.find(class_=re.compile("^star-"))
-        rating_mapping = {
-            "One": "1",
-            "Two": "2",
-            "Three": "3",
-            "Four": "4",
-            "Five": "5",
-        }
+        """
+        Extracts the review rating of the book from the provided soup object.
 
-        if rating_element:
-            rating_class = rating_element.attrs["class"][1]
-            review_rating = rating_mapping.get(rating_class, "Unknown")
-        else:
-            review_rating = "Not Found"
+        :return: Review rating as a string, or "Not Found" if rating is not found.
+        """
+        try:
+            rating_element = soup.find(class_=re.compile("^star-"))
+
+            if rating_element:
+                selected_rating_class = rating_element.attrs["class"][1]
+                if selected_rating_class not in self.RATING_MAPPING:
+                    print(f"Encountered new rating class: {selected_rating_class}")
+                review_rating = self.RATING_MAPPING.get(selected_rating_class, "Unknown")
+            else:
+                review_rating = "Not Found"
+        except KeyError as err:
+            log_error(f"An error occurred: {err}")
+            review_rating = "Error"
 
         return review_rating
     
