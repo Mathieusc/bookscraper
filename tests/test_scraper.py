@@ -54,3 +54,11 @@ def test_extract_category():
     result = book_scraper.extract_category(soup)
     excepted_result = "Poetry"
     assert result == excepted_result
+
+def test_extract_review_rating():
+    soup = BeautifulSoup(sample_html, "html.parser")
+    book_scraper = BookScraper("http://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html")
+    result = book_scraper.extract_review_rating(soup)
+    excepted_result = "3"
+    assert result == excepted_result
+    

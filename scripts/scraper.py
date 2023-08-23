@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import aiohttp
 import asyncio
 import csv
+import re
 
 
 class BookScraper:
@@ -19,7 +20,7 @@ class BookScraper:
                 
                 print(soup)
 
-                test = self.extract_category(soup)
+                test = self.extract_review_rating(soup)
                 print(test)
 
         return soup
@@ -58,8 +59,22 @@ class BookScraper:
         return category.text.strip()
     
     def extract_review_rating(self, soup):
-        rating = ""
-        return rating
+        rating_element = soup.find(class_=re.compile("^star-"))
+        rating_mapping = {
+            "One": "1",
+            "Two": "2",
+            "Three": "3",
+            "Four": "4",
+            "Five": "5",
+        }
+
+        if rating_element:
+            rating_class = rating_element.attrs["class"][1]
+            review_rating = rating_mapping.get(rating_class, "Unknown")
+        else:
+            review_rating = "Not Found"
+
+        return review_rating
     
     def extract_image_url(self, soup):
         image_url = ""
