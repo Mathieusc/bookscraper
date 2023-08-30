@@ -10,4 +10,5 @@ async def main():
     scraper = BookScraper(book_url)
     await scraper.fetch_book_data()
 
-asyncio.run(main())
+if __name__ == "__main__":
+    asyncio.run(main())

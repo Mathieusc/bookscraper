@@ -1,10 +1,10 @@
 import logging
 
 def setup_logging():
-    logging.basicConfig(level=logging.INFO,
+    logging.basicConfig(level=logging.DEBUG,
                         format="%(asctime)s - %(levelname)s - %(message)s",
                         filename="app.log",
-                        filemode="w")
+                        filemode="a")
     
 def log_error(error_message):
     logger = logging.getLogger(__name__)

@@ -3,8 +3,9 @@ import aiohttp
 import asyncio
 import csv
 import re
+import os
+import sys
 from logger.error_handler import log_error
-
 
 class BookScraper:
 
@@ -75,26 +76,18 @@ class BookScraper:
 
         :return: Review rating as a string, or "Not Found" if rating is not found.
         """
-        try:
-            rating_element = soup.find(class_=re.compile("^star-"))
 
-            if rating_element:
-                selected_rating_class = rating_element.attrs["class"][1]
-                if selected_rating_class not in self.RATING_MAPPING:
-                    print(f"Encountered new rating class: {selected_rating_class}")
-                review_rating = self.RATING_MAPPING.get(selected_rating_class, "Unknown")
-            else:
-                review_rating = "Not Found"
-        except KeyError as err:
-            log_error(f"An error occurred: {err}")
-            review_rating = "Error"
+        rating_element = soup.find(class_=re.compile("^star-"))
+
+        if rating_element:
+            selected_rating_class = rating_element.attrs["class"][1]
+            review_rating = self.RATING_MAPPING.get(selected_rating_class, "Unknown")
+        else:
+            review_rating = "Not Found"
+            log_error("Review rating not found in the provided soup")
 
         return review_rating
     
     def extract_image_url(self, soup):
         image_url = ""
         return image_url
-    
-
-    
-
