@@ -3,7 +3,7 @@ import aiohttp
 import asyncio
 import csv
 import re
-from ..logger.error_handler import log_error
+from logger.error_handler import log_error
 
 
 class BookScraper:
