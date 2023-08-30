@@ -1,6 +1,9 @@
 # Ignore venv
 venv/
 
+# Ignore print_dir.py used for debug
+print_dir.py
+
 # Ignore Python bytecode files
 __pycache__/
 
