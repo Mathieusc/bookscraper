@@ -62,7 +62,7 @@ class BookScraper:
                 
                 print(soup)
 
-                test = self.extract_price_including_tax(soup)
+                test = self.extract_title(soup)
                 print(test)
 
         return soup
@@ -111,7 +111,13 @@ class BookScraper:
             str: The book's title.
         """
         title = soup.find("h1")
-        return title.text
+
+        if title:
+            return title.text
+        else:
+            log_error("Title not found.")
+
+        return None
     
     def extract_price_including_tax(self, soup):
         """
