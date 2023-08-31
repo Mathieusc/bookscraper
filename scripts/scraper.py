@@ -62,7 +62,7 @@ class BookScraper:
                 
                 print(soup)
 
-                test = self.extract_category(soup)
+                test = self.extract_number_available(soup)
                 print(test)
 
         return soup
@@ -142,7 +142,13 @@ class BookScraper:
             str: The book's number.
         """
         number_available = soup.find("p", {"class": "instock availability"})
-        return number_available.text.strip()
+
+        if number_available:
+            return number_available.text.strip()
+        else:
+            log_error("Number available not found.")
+
+        return None
     
     def extract_product_description(self, soup):
         """
