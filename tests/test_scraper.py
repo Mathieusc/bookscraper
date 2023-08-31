@@ -61,4 +61,10 @@ def test_extract_review_rating():
     result = book_scraper.extract_review_rating(soup)
     excepted_result = "3"
     assert result == excepted_result
-    
+
+def test_extract_image_url():
+    soup = BeautifulSoup(sample_html, "html.parser")
+    book_scraper = BookScraper("http://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html")
+    result = book_scraper.extract_image_url(soup)
+    excepted_result = "http://books.toscrape.com/media/cache/fe/72/fe72f0532301ec28892ae79a629a293c.jpg"
+    assert result == excepted_result
