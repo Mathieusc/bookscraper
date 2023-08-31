@@ -37,6 +37,14 @@ class BookScraper:
         self.book_url = book_url
         self.book_data = {}
 
+    async def scrape_and_extract(self):
+        """
+        
+        """
+        soup = await self.fetch_book_data()
+        if soup:
+            self.extract_book_info(soup)
+
     async def fetch_book_data(self):
         """
         Fetch and parse the HTML content of the book's page.
@@ -54,10 +62,16 @@ class BookScraper:
                 
                 print(soup)
 
-                test = self.extract_product_description(soup)
+                test = self.extract_category(soup)
                 print(test)
 
         return soup
+    
+    def extract_book_info(self, soup):
+        """
+        
+        """
+        self.book_data["title"] = self.extract_title(soup)
 
     def extract_product_page_url(self, soup):
         """
@@ -157,8 +171,18 @@ class BookScraper:
         Returns:
             str: The book's category.
         """
-        category = soup.find("li", {"class": "active"}).find_previous_sibling()
-        return category.text.strip()
+        category_heading = soup.find("li", {"class": "active"})
+
+        if category_heading:
+            category = category_heading.find_previous_sibling()
+            if category:
+                return category.text.strip()
+            else:
+                log_error("Category not found.")
+        else:
+            log_error("Category heading not found.")
+
+        return None
     
     def extract_review_rating(self, soup):
         """
