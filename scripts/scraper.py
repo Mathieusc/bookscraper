@@ -54,7 +54,7 @@ class BookScraper:
                 
                 print(soup)
 
-                test = self.extract_universal_product_code(soup)
+                test = self.extract_product_description(soup)
                 print(test)
 
         return soup
@@ -137,8 +137,18 @@ class BookScraper:
         Returns:
             str: The book's description.
         """
-        description = soup.find("h2").find_next()
-        return description.text
+        description_heading = soup.find("h2", string="Product Description")
+
+        if description_heading:
+            description = description_heading.find_next("p")
+            if description:
+                return description.text
+            else:
+                log_error("Description not found.")
+        else:
+            log_error("Description heading not found.")
+
+        return None
     
     def extract_category(self, soup):
         """
