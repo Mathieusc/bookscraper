@@ -54,13 +54,18 @@ class BookScraper:
                 
                 print(soup)
 
-                test = self.extract_image_url(soup)
+                test = self.extract_universal_product_code(soup)
                 print(test)
 
         return soup
 
     def extract_product_page_url(self, soup):
-        """ADD THIS AT THE END"""
+        """
+        Extract the product URL of the book.
+        
+        Return:
+            str: the Product page URL.
+        """
         product_url = ""
         return product_url
     
@@ -71,8 +76,18 @@ class BookScraper:
         Returns:
             str: The extracted UPC.
         """
-        upc = soup.find("th", string="UPC").find_next_sibling()
-        return upc.text
+        upc_element = soup.find("th", string="UPC")
+
+        if upc_element:
+            upc = upc_element.find_next_sibling()
+            if upc:
+                return upc.text
+            else:
+                log_error("UPC not found.")
+        else:
+            log_error("UPC element not found.")
+
+        return None
     
     def extract_title(self, soup):
         """
