@@ -62,7 +62,7 @@ class BookScraper:
                 
                 print(soup)
 
-                test = self.extract_number_available(soup)
+                test = self.extract_price_excluding_tax(soup)
                 print(test)
 
         return soup
@@ -131,8 +131,18 @@ class BookScraper:
         Returns:
             str: The book's price without taxes.
         """
-        price_without_tax = soup.find("th", string="Price (excl. tax)").find_next_sibling()
-        return price_without_tax.text
+        price_without_tax = soup.find("th", string="Price (excl. tax)")
+
+        if price_without_tax:
+            price = price_without_tax.find_next("td")
+            if price:
+                return price.text
+            else:
+                log_error("Price not found.")
+        else:
+            log_error("Price without tax not found.")
+
+        return None
     
     def extract_number_available(self, soup):
         """
