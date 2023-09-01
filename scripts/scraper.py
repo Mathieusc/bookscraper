@@ -50,38 +50,46 @@ class BookScraper:
         Fetch and parse the HTML content of the book's page.
 
         Returns:
-            BeautifulSoup: The BeautifulSoup object representing the parsed 
+            BeautifulSoup: The BeautifulSoup object representing the parsed
                            HTML.
         """
         async with aiohttp.ClientSession() as session:
             async with session.get(self.book_url) as response:
                 html = await response.text()
                 soup = BeautifulSoup(html, "html.parser")
-                # Find the title for example for one book
-                print(soup.find("h1").text)
-                
-                print(soup)
 
-                test = self.extract_title(soup)
+
+                # DEBUG
+                test = self.extract_product_page_url(soup)
                 print(test)
 
         return soup
-    
+
     def extract_book_info(self, soup):
         """
-        
+        Extract book information from the parsed HTML and store it in the
+        book_data {} dictionary.
         """
+        self.book_data["product_page_url"] = self.extract_product_page_url(soup)
+        self.book_data["universal_product_code"] = self.extract_universal_product_code(soup)
         self.book_data["title"] = self.extract_title(soup)
+        self.book_data["price_including_tax"] = self.extract_price_including_tax(soup)
+        self.book_data["price_excluding_tax"] = self.extract_price_excluding_tax(soup)
+        self.book_data["number_available"] = self.extract_number_available(soup)
+        self.book_data["product_description"] = self.extract_product_description(soup)
+        self.book_data["category"] = self.extract_category(soup)
+        self.book_data["review_rating"] = self.extract_review_rating(soup)
+        self.book_data["image_url"] = self.extract_image_url(soup)
 
     def extract_product_page_url(self, soup):
         """
-        Extract the product URL of the book.
-        
-        Return:
-            str: the Product page URL.
+        TO MODIFY LATER
+        Get the book's URL.
+        Use manual URL's for now but will loop through each book
+        from each category later
         """
-        product_url = ""
-        return product_url
+
+        return self.book_url
     
     def extract_universal_product_code(self, soup):
         """"
@@ -222,15 +230,13 @@ class BookScraper:
 
         Returns:
             str: The book's rewiew rating.
-        Except:
-            "Not Found"
         """
-
         rating_element = soup.find(class_=re.compile("^star-"))
 
         if rating_element:
             selected_rating_class = rating_element.attrs["class"][1]
-            review_rating = self.RATING_MAPPING.get(selected_rating_class, "Unknown")
+            review_rating = self.RATING_MAPPING.get(selected_rating_class,
+                                                    "Unknown")
         else:
             review_rating = "Not Found"
             log_error("Review rating not found in the provided soup")
@@ -246,7 +252,6 @@ class BookScraper:
         Returns:
             str: The image URL.
         """
-
         image_tag = soup.find("img")
 
         if image_tag:
@@ -265,7 +270,6 @@ class BookScraper:
         book URL.
 
         Args:
-            book_url (str): The base book URL.
             relative_image_url (str): The relative image URL.
 
         Returns:
@@ -274,4 +278,5 @@ class BookScraper:
         if relative_image_url:
             absolute_image_url = self.BASE_BOOK_URL + relative_image_url.replace("../../", "")
             return absolute_image_url
+
         return None
