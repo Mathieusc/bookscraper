@@ -37,13 +37,17 @@ class BookScraper:
         self.book_url = book_url
         self.book_data = {}
 
-    async def scrape_and_extract(self):
+    async def scrape_and_extract(self, csv_filename):
         """
-        
+        Scrape book data and extract information.
+
+        Args:
+            csv_filename (str): The name of the CSV file to write to.
         """
         soup = await self.fetch_book_data()
         if soup:
             self.extract_book_info(soup)
+            self.write_to_csv(csv_filename)
 
     async def fetch_book_data(self):
         """
@@ -280,3 +284,18 @@ class BookScraper:
             return absolute_image_url
 
         return None
+    
+    def write_to_csv(self, filename):
+        """
+        Write the extracted book information to a CSV file.
+
+        Args:
+            filename (str): The name of the CSV file to write to.
+        """
+        with open(filename, "w", newline="", encoding="utf-8") as csvfile:
+            fieldnames = self.book_data.keys()
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+            writer.writeheader()
+            writer.writerow(self.book_data)
+

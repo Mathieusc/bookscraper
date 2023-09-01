@@ -7,10 +7,11 @@ async def main():
 
     book_url = "http://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html"
     scraper = BookScraper(book_url)
+    csv_filename = "data/book_data.csv"
     soup = await scraper.fetch_book_data()
     if soup:
         # Write the fetched book data inside BookSraper.book_data{}
-        scraper.extract_book_info(soup)
+        await scraper.scrape_and_extract(csv_filename)
 
 if __name__ == "__main__":
     asyncio.run(main())
