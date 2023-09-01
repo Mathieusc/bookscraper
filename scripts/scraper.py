@@ -9,7 +9,7 @@ from logger.error_handler import log_error
 
 class BookScraper:
     """
-    Scraping book information from 'http://books.toscrape.com/' using
+    Scrape book information from 'http://books.toscrape.com/' using
     Beautiful Soup.
 
     Attributes:
@@ -246,8 +246,6 @@ class BookScraper:
             log_error("Review rating not found in the provided soup")
 
         return review_rating
-    
-
 
     def extract_image_url(self, soup):
         """
